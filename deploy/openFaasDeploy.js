@@ -5,7 +5,7 @@ class OpenFaasDeploy {
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
-    this.provider = this.serverless.getProvider('openfaas');
+    this.provider = this.serverless.getProvider('faas');
 
     this.hooks = {
       'before:deploy:deploy': () => BbPromise.bind(this),

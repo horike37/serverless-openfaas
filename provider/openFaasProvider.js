@@ -8,7 +8,7 @@ const BbPromise = require('bluebird');
 const _ = require('lodash');
 
 const constants = {
-  providerName: 'openfaas',
+  providerName: 'faas',
 };
 
 class openFaasProvider {
