@@ -2,7 +2,7 @@
 const BbPromise = require('bluebird');
 const path = require('path');
 const fse = BbPromise.promisifyAll(require('fs-extra'));
-const _ = require('lodash')
+const _ = require('lodash');
 
 class OpenFaasPackage {
   constructor(serverless, options) {
