@@ -1,6 +1,5 @@
 'use strict';
 const BbPromise = require('bluebird');
-const path = require('path');
 const fetch = require('node-fetch');
 
 class OpenFaasDeploy {
@@ -17,8 +16,24 @@ class OpenFaasDeploy {
   }
 
   deploy() {
-    console.log(path.join(this.serverless.service.provider.gateway, '/system/functions'));
-    return BbPromise.resolve();
+    const endpoint = `${this.serverless.service.provider.gateway}/system/functions`;
+    const allFunctions = this.serverless.service.getAllFunctions();
+    return BbPromise.each(
+      allFunctions,
+      functionName =>
+        fetch(endpoint, {
+          method: 'PUT',
+          body: JSON.stringify({
+            service: functionName,
+            image: this.serverless.service.functions[functionName].image,
+            network: 'func_functions',
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(res => {
+          console.log(res);
+        })
+    );
   }
 }
 
