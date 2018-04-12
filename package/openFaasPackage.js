@@ -5,6 +5,7 @@ const fse = BbPromise.promisifyAll(require('fs-extra'));
 const Docker = BbPromise.promisifyAll(require('dockerode'));
 const tar = require('tar-fs');
 const _ = require('lodash');
+const os = require('os');
 
 class OpenFaasPackage {
   constructor(serverless, options) {
@@ -53,9 +54,17 @@ class OpenFaasPackage {
     const tarStream = tar.pack(buildPath);
     return this.docker.buildImage(tarStream,
       { t: image })
-    .then(output => {
+    .then(stream => {
       this.serverless.cli.log(`Building: ${image}. Please wait..`);
-      output.pipe(process.stdout);
+      this.docker.modem.followProgress(stream, (error, outputs) =>
+        BbPromise.each(outputs, (output) => {
+          if (_.isString(output.stream) && !_.isEmpty(output.stream.replace(/\n/g, ''))) {
+            this.serverless.cli.log(output.stream.replace(/\n/g, ''));
+          } else if (!_.isEmpty(output.aux)) {
+            this.serverless.cli.log(JSON.stringify(output.aux));
+          }
+        })
+      );
       return BbPromise.resolve();
     });
   }
