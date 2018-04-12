@@ -17,10 +17,46 @@ class OpenFaasPackage {
 
     delete this.serverless.pluginManager.hooks['package:createDeploymentArtifacts'];
     this.hooks = {
-      'before:package:createDeploymentArtifacts': () =>
+      'package:createDeploymentArtifacts': () =>
         BbPromise.bind(this)
+          .then(this.validate)
           .then(this.compileFunctions),
     };
+  }
+
+  validate() {
+    const allFunctions = this.serverless.service.getAllFunctions();
+    return BbPromise.each(
+      allFunctions,
+      functionName =>
+        BbPromise.try(() => {
+          if (_.isEmpty(this.serverless.service.functions[functionName].handler)) {
+            const errorMessage = [
+              'please provide the full path to your function\'s handler',
+              ` in function "${functionName}" in serverless.yml.`,
+            ].join('');
+            throw new this.serverless.classes.Error(errorMessage);
+          }
+
+          if (_.isEmpty(this.serverless.service.provider.runtime) &&
+            _.isEmpty(this.serverless.service.functions[functionName].runtime)) {
+            const errorMessage = [
+              'please provide runtime to provider section or',
+              ` in function "${functionName}" in serverless.yml.`,
+            ].join('');
+            throw new this.serverless.classes.Error(errorMessage);
+          }
+
+          if (_.isEmpty(this.serverless.service.functions[functionName].image)) {
+            const errorMessage = [
+              'please provide a valid image name for your Docker image',
+              ` in function "${functionName}" in serverless.yml.`,
+            ].join('');
+            throw new this.serverless.classes.Error(errorMessage);
+          }
+        }
+      )
+    );
   }
 
   compileFunctions() {
