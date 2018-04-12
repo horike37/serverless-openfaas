@@ -22,6 +22,11 @@ class OpenFaasPackage {
           .then(this.validate)
           .then(this.compileFunctions),
     };
+
+    this.followProgress = BbPromise.promisify((stream, done) =>
+      this.docker.modem.followProgress(stream, done),
+      { context: this.docker.modem }
+    );
   }
 
   validate() {
@@ -91,7 +96,7 @@ class OpenFaasPackage {
       { t: image })
     .then(stream => {
       this.serverless.cli.log(`Building: ${image}. Please wait..`);
-      this.docker.modem.followProgress(stream, (error, outputs) =>
+      return this.followProgress(stream).then((outputs) =>
         BbPromise.each(outputs, (output) => {
           if (_.isString(output.stream) && !_.isEmpty(output.stream.replace(/\n/g, ''))) {
             this.serverless.cli.log(output.stream.replace(/\n/g, ''));
@@ -100,7 +105,6 @@ class OpenFaasPackage {
           }
         })
       );
-      return BbPromise.resolve();
     });
   }
 }
