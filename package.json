@@ -19,8 +19,10 @@
   "homepage": "https://github.com/horike37/serverless-openfaas#readme",
   "dependencies": {
     "bluebird": "^3.5.1",
+    "dockerode": "^2.5.4",
     "fs-extra": "^5.0.0",
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.5",
+    "tar-fs": "^1.16.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
