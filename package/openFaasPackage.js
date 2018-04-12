@@ -5,7 +5,6 @@ const fse = BbPromise.promisifyAll(require('fs-extra'));
 const Docker = BbPromise.promisifyAll(require('dockerode'));
 const tar = require('tar-fs');
 const _ = require('lodash');
-const os = require('os');
 
 class OpenFaasPackage {
   constructor(serverless, options) {
