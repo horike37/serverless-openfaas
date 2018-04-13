@@ -2,6 +2,7 @@
 const OpenFaasProvider = require('./provider/openFaasProvider');
 const OpenFaasDeploy = require('./deploy/openFaasDeploy');
 const OpenFaasPackage = require('./package/openFaasPackage');
+const OpenFaasRemove = require('./remove/openFaasRemove');
 
 class ServerlessOpenfaas {
   constructor(serverless, options) {
@@ -11,6 +12,7 @@ class ServerlessOpenfaas {
     this.serverless.pluginManager.addPlugin(OpenFaasProvider);
     this.serverless.pluginManager.addPlugin(OpenFaasDeploy);
     this.serverless.pluginManager.addPlugin(OpenFaasPackage);
+    this.serverless.pluginManager.addPlugin(OpenFaasRemove);
   }
 }
 module.exports = ServerlessOpenfaas;
