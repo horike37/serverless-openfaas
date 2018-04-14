@@ -7,7 +7,7 @@ class OpenFaasInvoke {
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
-    this.provider = this.serverless.getProvider('faas');
+    this.provider = this.serverless.getProvider('openfaas');
     this.sdk = new OpenFaasSdk(this.serverless, 'func_functions');
 
     this.hooks = {

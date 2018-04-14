@@ -1,14 +1,7 @@
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-
-const BbPromise = require('bluebird');
-const _ = require('lodash');
-
 const constants = {
-  providerName: 'faas',
+  providerName: 'openfaas',
 };
 
 class openFaasProvider {

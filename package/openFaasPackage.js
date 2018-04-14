@@ -8,7 +8,7 @@ class OpenFaasPackage {
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
-    this.provider = this.serverless.getProvider('faas');
+    this.provider = this.serverless.getProvider('openfaas');
 
     delete this.serverless.pluginManager.hooks['package:createDeploymentArtifacts'];
     this.hooks = {
