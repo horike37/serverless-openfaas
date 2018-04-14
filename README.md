@@ -18,9 +18,11 @@ $ npm install
 ```
 
 ## Supported command
-- sls package: Build your function docker images
-- sls deploy: Deploy functions to OpenFaaS
-- sls deploy function -f <your-function>: Deploy function you specify to OpenFaaS
-- sls info: Get infomation of your OpenFaaS
-- sls invoke -f <your-function> -d <your-data>:
-- sls remove: Remove functions from OpenFaaS
+```
+sls package: Build your function docker images
+sls deploy: Deploy functions to OpenFaaS
+sls deploy function -f <your-function>: Deploy function you specify to OpenFaaS
+sls info: Get infomation of your OpenFaaS
+sls invoke -f <your-function> -d <your-data>:
+sls remove: Remove functions from OpenFaaS
+```
