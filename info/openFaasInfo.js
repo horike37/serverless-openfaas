@@ -1,6 +1,5 @@
 'use strict';
 const BbPromise = require('bluebird');
-const normalizeUrl = require('normalize-url');
 const OpenFaasSdk = require('../lib/openFaasSdk');
 const displayInfo = require('../lib/displayInfo');
 
@@ -9,7 +8,6 @@ class OpenFaasDeploy {
     this.serverless = serverless;
     this.options = options;
     this.provider = this.serverless.getProvider('faas');
-    this.gateway = normalizeUrl(this.serverless.service.provider.gateway);
     this.sdk = new OpenFaasSdk(this.serverless, 'func_functions');
 
     Object.assign(
@@ -18,14 +16,13 @@ class OpenFaasDeploy {
     );
 
     this.hooks = {
-      'before:deploy:deploy': () => BbPromise.bind(this)
-        .then(this.deploy),
+      'info:info': () => BbPromise.bind(this)
+        .then(this.info),
     };
   }
 
-  deploy() {
-    return this.sdk.deploy()
-      .then(() => this.sdk.getDeployedFunctions())
+  info() {
+    return this.sdk.getDeployedFunctions()
       .then(functions => this.displayInfo(functions));
   }
 }
