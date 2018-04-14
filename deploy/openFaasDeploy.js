@@ -13,7 +13,7 @@ class OpenFaasDeploy {
     this.sdk = new OpenFaasSdk(this.serverless, 'func_functions');
 
     this.hooks = {
-      'deploy:deploy': () => BbPromise.bind(this)
+      'before:deploy:deploy': () => BbPromise.bind(this)
         .then(this.deploy),
     };
   }
